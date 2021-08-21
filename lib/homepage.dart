@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'favoitestar.dart';
 class HomePage extends StatefulWidget {
 
   HomePage({Key? key, required this.title}) : super(key: key);
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: const Text(
-                    'Oeschinen Lake Campground',
+                    'Gecko Land',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -39,11 +40,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           /*3*/
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          const Text('41'),
+          FavoriteWidget(),
         ],
       ),
     );
@@ -60,17 +57,12 @@ class _HomePageState extends State<HomePage> {
     Widget textSection = const Padding(
       padding: EdgeInsets.all(32),
       child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-        'Alps. Situated 1,578 meters above sea level, it is one of the '
-        'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-        'half-hour walk through pastures and pine forest, leads you to the '
-        'lake, which warms to 20 degrees Celsius in the summer. Activities '
-        'enjoyed here include rowing, and riding the summer toboggan run.',
+        'Gecko, (suborder Gekkota), any of more than 1,000 species of lizards making up six families of the suborder Gekkota. Geckos are mostly small, usually nocturnal reptiles with a soft skin. They also possess a short stout body, a large head, and typically well-developed limbs. The ends of each limb are often equipped with digits possessing adhesive pads. Most of the species are 3 to 15 cm (1.2 to 6 inches) long, including tail length (about half the total). They have adapted to habitats ranging from deserts to jungles. Some species frequent human habitations, and most feed on insects.',
         softWrap: true,
       ),
     );
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
           Image.asset(
             'images/lake.jpeg',
