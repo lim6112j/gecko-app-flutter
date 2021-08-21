@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:graphview/GraphView.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,70 +46,148 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class  _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+        body: Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Wrap(
+          children: [
+            Container(
+              width: 100,
+              child: TextFormField(
+                initialValue: builder.siblingSeparation.toString(),
+                decoration: InputDecoration(labelText: "Sibling Separation"),
+                onChanged: (text) {
+                  builder.siblingSeparation = int.tryParse(text) ?? 100;
+                  this.setState(() {});
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Container(
+              width: 100,
+              child: TextFormField(
+                initialValue: builder.levelSeparation.toString(),
+                decoration: InputDecoration(labelText: "Level Separation"),
+                onChanged: (text) {
+                  builder.levelSeparation = int.tryParse(text) ?? 100;
+                  this.setState(() {});
+                },
+              ),
             ),
+            Container(
+              width: 100,
+              child: TextFormField(
+                initialValue: builder.subtreeSeparation.toString(),
+                decoration: InputDecoration(labelText: "Subtree separation"),
+                onChanged: (text) {
+                  builder.subtreeSeparation = int.tryParse(text) ?? 100;
+                  this.setState(() {});
+                },
+              ),
+            ),
+            Container(
+              width: 100,
+              child: TextFormField(
+                initialValue: builder.orientation.toString(),
+                decoration: InputDecoration(labelText: "Orientation"),
+                onChanged: (text) {
+                  builder.orientation = int.tryParse(text) ?? 100;
+                  this.setState(() {});
+                },
+              ),
+            ),
+            RaisedButton(
+              onPressed: () {
+                final node12 = Node(rectangleWidget(r.nextInt(100)));
+                var edge = graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
+                print(edge);
+                graph.addEdge(edge, node12);
+                setState(() {});
+              },
+              child: Text("Add"),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        Expanded(
+          child: InteractiveViewer(
+              constrained: false,
+              boundaryMargin: EdgeInsets.all(100),
+              minScale: 0.001,
+              maxScale: 5.6,
+              child: GraphView(
+                graph: graph,
+                algorithm: BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
+                paint: Paint()
+                  ..color = Colors.green
+                  ..strokeWidth = 1
+                  ..style = PaintingStyle.stroke,
+                builder: (Node node) {
+                  // I can decide what widget should be shown here based on the id
+                  var a = node.key?.value as int;
+                  return rectangleWidget(a);
+                },
+              )),
+        ),
+      ],
+    ));
+  }
+
+  Random r = Random();
+
+  Widget rectangleWidget(int a) {
+    return InkWell(
+      onTap: () {
+        print('clicked');
+      },
+      child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(color: (Colors.blue[100])!, spreadRadius: 1),
+            ],
+          ),
+          child: Text('Node ${a}')),
     );
+  }
+
+  final Graph graph = Graph()..isTree = true;
+  BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
+
+  @override
+  void initState() {
+    final node1 = Node.Id(1);
+    final node2 = Node.Id(2);
+    final node3 = Node.Id(3);
+    final node4 = Node.Id(4);
+    final node5 = Node.Id(5);
+    final node6 = Node.Id(6);
+    final node8 = Node.Id(7);
+    final node7 = Node.Id(8);
+    final node9 = Node.Id(9);
+    final node10 = Node(rectangleWidget(10));  //using deprecated mechanism of directly placing the widget here
+    final node11 = Node(rectangleWidget(11));
+    final node12 = Node(rectangleWidget(12));
+
+    graph.addEdge(node1, node2);
+    graph.addEdge(node1, node3, paint: Paint()..color = Colors.red);
+    graph.addEdge(node1, node4, paint: Paint()..color = Colors.blue);
+    graph.addEdge(node2, node5);
+    graph.addEdge(node2, node6);
+    graph.addEdge(node6, node7, paint: Paint()..color = Colors.red);
+    graph.addEdge(node6, node8, paint: Paint()..color = Colors.red);
+    graph.addEdge(node4, node9);
+    graph.addEdge(node4, node10, paint: Paint()..color = Colors.black);
+    graph.addEdge(node4, node11, paint: Paint()..color = Colors.red);
+    graph.addEdge(node11, node12);
+
+    builder
+      ..siblingSeparation = (100)
+      ..levelSeparation = (150)
+      ..subtreeSeparation = (150)
+      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
   }
 }
