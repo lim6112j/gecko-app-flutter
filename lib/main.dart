@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'bloodline.dart';
+import 'HomePage.dart';
 void main() {
   runApp(MyApp());
 }
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'Gecko Page'),
+      // home: BloodLine(title: 'Gecko Page'),
+      home: HomePage(title: 'Home Page'),
     );
   }
 }

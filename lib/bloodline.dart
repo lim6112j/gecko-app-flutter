@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class BloodLine extends StatefulWidget {
+  BloodLine({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -16,9 +16,9 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _BloodLineState createState() => _BloodLineState();
 }
-class  _MyHomePageState extends State<MyHomePage> {
+class  _BloodLineState extends State<BloodLine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
