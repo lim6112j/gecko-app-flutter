@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gecko_app/bloodline.dart';
 import 'favoitestar.dart';
 class HomePage extends StatefulWidget {
 
@@ -49,9 +50,30 @@ class _HomePageState extends State<HomePage> {
     Widget buttonSection = Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildButtonColumn(color, Icons.call, 'CALL'),
-        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-        _buildButtonColumn(color, Icons.share, 'SHARE'),
+        _buildButtonColumn(color, Icons.call, 'CALL', () {
+            print('call');
+        }),
+        _buildButtonColumn(color, Icons.near_me, 'ROUTE',(){
+            print('Route');
+        }),
+        _buildButtonColumn(color, Icons.share, 'SHARE', (){
+            print('Share');
+        }),
+      ],
+    );
+    Widget naviSection = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildButtonColumn(color, Icons.cabin, 'BloodLine', (){
+            print('Bloodline');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BloodLine(title: 'blood')),
+            );
+        }),
+        _buildButtonColumn(color, Icons.access_alarms, 'Home', (){
+            print('Home');
+        }),
       ],
     );
     Widget textSection = const Padding(
@@ -73,28 +95,32 @@ class _HomePageState extends State<HomePage> {
           titleSection,
           buttonSection,
           textSection,
+          naviSection
         ]
       ),
     );
   }
 }
-Column _buildButtonColumn(Color color, IconData icon, String label) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(icon, color: color),
-      Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: color,
+GestureDetector _buildButtonColumn(Color color, IconData icon, String label, onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
           ),
         ),
-      ),
-    ],
+      ],
+    )
   );
 }
